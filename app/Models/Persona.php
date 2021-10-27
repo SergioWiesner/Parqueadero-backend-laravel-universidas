@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Persona extends Model
 {
     use HasFactory;
+
+    protected $table = "personas";
+    protected $fillable = ['id', 'tipo_documento', 'documento', 'nombres', 'apellidos', 'direccion', 'telefono', 'firma', 'created_at', 'updated_at', 'deleted_at'];
 }
