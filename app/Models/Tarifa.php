@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Tarifa extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'Costo',
+        'IdTipo'
+    ];
 }
