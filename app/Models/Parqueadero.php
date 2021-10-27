@@ -11,6 +11,8 @@ class Parqueadero extends Model
 
     protected $fillable = [
         'Nombre',
-        'Ubicacion'
+        'Ubicacion',
+        'latitud',
+        'longitud'
     ];
 }
