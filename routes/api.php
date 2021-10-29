@@ -18,5 +18,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-/* PERSONAS */
+/* personas */
 Route::resource("personas", \App\Http\Controllers\Persona::class);
+/* vehiculos */
+Route::resource("vehiculos", \App\Http\Controllers\Vehiculo::class);
+/* tipo-vehiculos */
+Route::resource("tipo-vehiculos", \App\Http\Controllers\TipoVehiculo::class);
+/* tarifa */
+Route::resource("tarifa", \App\Http\Controllers\Tarifa::class);
