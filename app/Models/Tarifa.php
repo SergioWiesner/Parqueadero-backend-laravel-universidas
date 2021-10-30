@@ -9,8 +9,11 @@ class Tarifa extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'Costo',
-        'IdTipo'
-    ];
+    protected $table = "tarifas";
+    protected $fillable = ['id', 'Costo', 'IdTipo', 'created_at', 'updated_at'];
+
+    public function tipoVehiculo()
+    {
+        $this->belongsTo(TipoVehiculo::class, 'IdTipo', 'id');
+    }
 }

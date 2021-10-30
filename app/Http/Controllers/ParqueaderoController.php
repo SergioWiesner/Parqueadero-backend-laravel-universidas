@@ -3,33 +3,28 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\ParqueaderoRequest;
-use App\Models\Parqueadero;
-use App\Services\GoogleMaps;
 
 class ParqueaderoController extends Controller
 {
-
-    public function list()
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
     {
         $parqueaderos = Parqueadero::get();
         return response()->json($parqueaderos);
     }
 
-    public function get($id)
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
     {
-        $parqueadero = Parqueadero::find($id);
-        if(!$parqueadero) {
-            return response()->json([ 'errors' => [ 'id' => ['id parking doesn\'t exists'] ]]);
-        }
-        
-        return response()->json($parqueadero);
-    }
-
-    public function create(ParqueaderoRequest $request)
-    {
-        $request->validated();
-
         $nombre = $request->get('nombre');
         $direccion = $request->get('direccion');
         $localizacion = GoogleMaps::calcularLatitudLongitud($direccion);
@@ -45,10 +40,31 @@ class ParqueaderoController extends Controller
         return response()->json($data);
     }
 
-    public function update(ParqueaderoRequest $request, $id)
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
     {
-        $request->validated();
+        $parqueadero = Parqueadero::find($id);
+        if(!$parqueadero) {
+            return response()->json([ 'errors' => [ 'id' => ['id parking doesn\'t exists'] ]]);
+        }
+        
+        return response()->json($parqueadero);
+    }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
         $nombre = $request->get('nombre');
         $direccion = $request->get('direccion');
         $localizacion = GoogleMaps::calcularLatitudLongitud($direccion);
@@ -69,9 +85,14 @@ class ParqueaderoController extends Controller
         return response()->json($data);
     }
 
-    public function delete($id)
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
     {
-
         $parqueadero = Parqueadero::find($id);
         if(!$parqueadero) {
             return response()->json([ 'errors' => [ 'id' => ['id parking doesn\'t exists'] ]]);

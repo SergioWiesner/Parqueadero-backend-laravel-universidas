@@ -9,7 +9,16 @@ class TipoVehiculo extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'Clase'
-    ];
+    protected $table = "tipo_vehiculos";
+    protected $fillable = ['id', 'Clase', 'created_at', 'updated_at', 'deleted_at'];
+
+    public function vehiculo()
+    {
+        $this->hasMany(Vehiculo::class, 'IdTipo', 'id');
+    }
+
+    public function tarifa()
+    {
+        $this->hasMany(Tarifa::class, 'IdTipo', 'id');
+    }
 }

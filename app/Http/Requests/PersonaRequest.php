@@ -3,10 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Contracts\Validation\Validator;
 
-class ParqueaderoRequest extends FormRequest
+class PersonaRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,8 +24,13 @@ class ParqueaderoRequest extends FormRequest
     public function rules()
     {
         return [
-            'nombre' => 'required|string|max:255',
-            'direccion' => 'required|string',
+            'tipo_documento' => 'integer',
+            "documento" => 'integer|required|unique:personas',
+            'nombres' => 'string|required',
+            'apellidos' => 'string|required',
+            'direccion' => 'string',
+            'telefono' => 'string',
+            'firma' => 'string',
         ];
     }
 }

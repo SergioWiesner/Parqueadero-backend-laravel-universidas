@@ -9,7 +9,12 @@ class Persona extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'Nombre'
-    ];
+    protected $table = "personas";
+    protected $fillable = ['id', 'tipo_documento', 'documento', 'nombres', 'apellidos', 'direccion', 'telefono', 'firma', 'created_at', 'updated_at', 'deleted_at'];
+
+
+    public function vehiculos()
+    {
+        $this->hasMany(Vehiculo::class, "IdPersona", "id");
+    }
 }

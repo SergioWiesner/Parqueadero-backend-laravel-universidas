@@ -9,9 +9,11 @@ class Vehiculo extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'Marca',
-        'IdPersona',
-        'IdTipo'
-    ];
+    protected $table = "vehiculos";
+    protected $fillable = ['id', 'Placa', 'Marca', 'IdPersona', 'IdTipo', 'created_at', 'updated_at', 'deleted_at'];
+
+    public function persona()
+    {
+        $this->belongsTo(Persona::class, 'IdPersona', 'id');
+    }
 }

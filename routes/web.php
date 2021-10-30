@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ParqueaderoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,12 +13,9 @@ use App\Http\Controllers\ParqueaderoController;
 |
 */
 
-Route::post('/parqueadero', [ParqueaderoController::class, 'create']);
+Route::get('/', function () {
+    return view('welcome');
+});
 
-Route::get('/parqueaderos', [ParqueaderoController::class, 'list']);
 
-Route::get('/parqueadero/{id}', [ParqueaderoController::class, 'get']);
 
-Route::put('/parqueadero/{id}', [ParqueaderoController::class, 'update']);
-
-Route::delete('/parqueadero/{id}', [ParqueaderoController::class, 'delete']);
