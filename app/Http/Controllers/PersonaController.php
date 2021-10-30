@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Persona as modelPersona;
+use App\Models\Persona;
 
-class Persona extends Controller
+class PersonaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,8 @@ class Persona extends Controller
      */
     public function index()
     {
-
+        $parqueaderos = Parqueadero::get();
+        return response()->json($parqueaderos);
     }
 
     /**
@@ -36,9 +37,9 @@ class Persona extends Controller
     public function store(Request $request)
     {
         try {
-            $registro = modelPersona::where("documento", $request->documento)->first();
+            $registro = Persona::where("documento", $request->documento)->first();
             if (!is_null($registro) && count($registro) > 0) {
-                modelPersona::where("documento", $request->documento)->update([
+                Persona::where("documento", $request->documento)->update([
                     'tipo_documento' => $request->tipo_documento,
                     'nombres' => $request->nombres,
                     'apellidos' => $request->apellidos,
@@ -49,7 +50,7 @@ class Persona extends Controller
                 return response()->json(array('success' => true, 'message' => "Usuario " . $request->nombres . " ah sido actualizado."));
             }
 
-            modelPersona::create([
+            Persona::create([
                 'tipo_documento' => $request->tipo_documento,
                 "documento" => $request->documento,
                 'nombres' => $request->nombres,

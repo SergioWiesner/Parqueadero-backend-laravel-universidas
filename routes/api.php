@@ -19,10 +19,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 /* personas */
-Route::resource("personas", \App\Http\Controllers\Persona::class);
+Route::resource("personas", \App\Http\Controllers\PersonaController::class);
 /* vehiculos */
-Route::resource("vehiculos", \App\Http\Controllers\Vehiculo::class);
+Route::resource("vehiculos", \App\Http\Controllers\VehiculoController::class);
 /* tipo-vehiculos */
-Route::resource("tipo-vehiculos", \App\Http\Controllers\TipoVehiculo::class);
+Route::resource("tipo-vehiculos", \App\Http\Controllers\TipoVehiculoController::class);
 /* tarifa */
-Route::resource("tarifa", \App\Http\Controllers\Tarifa::class);
+Route::resource("tarifa", \App\Http\Controllers\TarifaController::class);
+/* parqueaderos */
+Route::resource('parqueaderos', \App\Http\Controllers\ParqueaderoController::class);

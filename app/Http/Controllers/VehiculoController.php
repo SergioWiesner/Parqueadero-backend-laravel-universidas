@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\VehiculoRequest;
 use Illuminate\Http\Request;
-use App\Models\TipoVehiculo as tipoVehiculoModel;
+use App\Models\Vehiculo;
 
-class TipoVehiculo extends Controller
+class VehiculoController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        return response()->json(array('success' => true, 'body' => tipoVehiculoModel::all()));
+        //
     }
 
     /**
@@ -31,11 +33,17 @@ class TipoVehiculo extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(VehiculoRequest $request)
     {
-        //
+        Vehiculo::create([
+            'Marca' => $request->Marca,
+            'IdPersona' => $request->IdPersona,
+            'IdTipo' => $request->IdTipo
+        ]);
+
+        return response()->json(array('success' => true, 'message' => "Vehiculo registrado exitosamente."));
     }
 
     /**

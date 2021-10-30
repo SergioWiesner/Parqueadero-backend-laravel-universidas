@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
-class VehiculoRequest extends FormRequest
+class ParqueaderoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,9 +26,8 @@ class VehiculoRequest extends FormRequest
     public function rules()
     {
         return [
-            'Marca' => 'required|string',
-            'IdPersona' => 'required|integer',
-            'IdTipo' => 'required|integer',
+            'nombre' => 'required|string|max:255',
+            'direccion' => 'required|string',
         ];
     }
 }

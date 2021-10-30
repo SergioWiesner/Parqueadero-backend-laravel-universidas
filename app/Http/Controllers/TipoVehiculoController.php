@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tarifa as tarifaModel;
 use Illuminate\Http\Request;
+use App\Models\TipoVehiculo;
 
-class Tarifa extends Controller
+class TipoVehiculoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class Tarifa extends Controller
      */
     public function index()
     {
-        return response()->json(array('success' => true, 'body' => tarifaModel::all()));
+        return response()->json(array('success' => true, 'body' => TipoVehiculo::all()));
     }
 
     /**

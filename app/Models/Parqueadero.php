@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Parqueadero extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'Nombre',
+        'Ubicacion',
+        'latitud',
+        'longitud'
+    ];
 }
