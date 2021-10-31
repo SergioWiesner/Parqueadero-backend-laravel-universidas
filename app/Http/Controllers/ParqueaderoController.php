@@ -67,6 +67,9 @@ class ParqueaderoController extends Controller
     public function show($id)
     {
         $parqueadero = Parqueadero::with('bahias')->find($id);
+        if(!$parqueadero) {
+            return response()->json([ 'errors' => [ 'id' => ['id parking doesn\'t exists'] ]]);
+        }
         return response()->json($parqueadero);
     }
 
@@ -79,6 +82,12 @@ class ParqueaderoController extends Controller
      */
     public function update(ParqueaderoRequest $request, $id)
     {
+
+        $parqueadero = Parqueadero::find($id);
+        if(!$parqueadero) {
+            return response()->json([ 'errors' => [ 'id' => ['id parking doesn\'t exists'] ]]);
+        }
+
         $nombre = $request->get('nombre');
         $direccion = $request->get('direccion');
         $localizacion = GoogleMaps::calcularLatitudLongitud($direccion);
@@ -90,7 +99,7 @@ class ParqueaderoController extends Controller
             'longitud' => $localizacion['longitud'],
         ];
 
-        Parqueadero::find($id)->update($data);
+        $parqueadero->update($data);
         return response()->json([
             'success' => true, 
             'message' => "Parqueadero actualizado exitosamente."
@@ -105,7 +114,12 @@ class ParqueaderoController extends Controller
      */
     public function destroy($id)
     {
-        Parqueadero::find($id)->delete();
+        $parqueadero = Parqueadero::find($id);
+        if(!$parqueadero) {
+            return response()->json([ 'errors' => [ 'id' => ['id parking doesn\'t exists'] ]]);
+        }
+
+        $parqueadero->delete();
         return response()->json([ 
             'success' => true, 
             'message' => "Parqueadero eliminado exitosamente." 

@@ -16,16 +16,16 @@ class Vehiculo extends Model
 
     public function persona()
     {
-        $this->belongsTo(Persona::class, 'IdPersona', 'id');
+        return $this->belongsTo(Persona::class, 'IdPersona', 'id');
     }
 
     public function vehiculo()
     {
-        $this->belongsTo(TipoVehiculo::class, 'IdTipo', 'id');
+        return $this->belongsTo(TipoVehiculo::class, 'IdTipo', 'id');
     }
 
     public function pagos()
     {
-        $this->hasMany(Pago::class, 'IdVehiculo', 'id');
+        return $this->hasMany(Pago::class, 'IdVehiculo', 'id');
     }
 }

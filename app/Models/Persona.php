@@ -15,6 +15,6 @@ class Persona extends Model
 
     public function vehiculos()
     {
-        $this->hasMany(Vehiculo::class, "IdPersona", "id");
+        return $this->hasMany(Vehiculo::class, "IdPersona", "id");
     }
 }

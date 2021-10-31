@@ -10,13 +10,20 @@ use App\Http\Requests\BahiaRequest;
 class BahiaController extends Controller
 {
 
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($idParqueadero)
+    public function index($idParqueadero = null)
     {
+        if(!$idParqueadero) abort(404);
+        $parqueadero = Parqueadero::find($idParqueadero);
+        if(!$parqueadero) {
+            return response()->json([ 'errors' => [ 'id' => ['id parking doesn\'t exists'] ]]);
+        }
+
         $bahias = Parqueadero::find($idParqueadero)->bahias()->paginate(10);
         return response()->json($bahias);
     }
@@ -27,9 +34,9 @@ class BahiaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($idParqueadero, $id)
+    public function show($id)
     {
-        $bahia = Parqueadero::find($idParqueadero)->bahias->find($id);     
+        $bahia = Bahia::find($id);
         if(!$bahia) {
             return response()->json([ 'errors' => [ 'id' => ['id bahia doesn\'t exists in this parking'] ]]);
         }
@@ -43,8 +50,14 @@ class BahiaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(BahiaRequest $request, $idParqueadero)
+    public function store(BahiaRequest $request, $idParqueadero = null)
     {
+        if(!$idParqueadero) abort(404);
+        $parqueadero = Parqueadero::find($idParqueadero);
+        if(!$parqueadero) {
+            return response()->json([ 'errors' => [ 'id' => ['id parking doesn\'t exists'] ]]);
+        }
+
         $disponible = $request->get('disponible');
 
         $data = [
@@ -53,7 +66,7 @@ class BahiaController extends Controller
         ];
 
         $bahia = Bahia::create($data);
-        return response()->json($data);
+        return response()->json($bahia);
     }
 
     /**
@@ -63,12 +76,12 @@ class BahiaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(BahiaRequest $request, $idParqueadero, $id)
+    public function update(BahiaRequest $request, $id)
     {
         try {
             
             $disponible = $request->get('disponible');
-            $bahia = Parqueadero::find($idParqueadero)->bahias->find($id);
+            $bahia = Bahia::find($id);
             $bahia->update(['Disponible' => $disponible]);
 
             return response()->json([
@@ -87,9 +100,9 @@ class BahiaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($idParqueadero, $id)
+    public function destroy($id)
     {
-        $bahia = Parqueadero::find($idParqueadero)->bahias->find($id);
+        $bahia = Bahia::find($id);
         if(!$bahia) {
             return response()->json([ 'errors' => [ 'id' => ['id bahia doesn\'t exists'] ]]);
         }
