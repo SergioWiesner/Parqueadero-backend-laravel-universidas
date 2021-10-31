@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\ParqueaderoRequest;
 use App\Models\Parqueadero;
+use App\Models\Bahia;
 use App\Services\GoogleMaps;
 
 class ParqueaderoController extends Controller
@@ -15,7 +17,7 @@ class ParqueaderoController extends Controller
      */
     public function index()
     {
-        $parqueaderos = Parqueadero::get();
+        $parqueaderos = Parqueadero::with('bahias')->paginate(10);
         return response()->json($parqueaderos);
     }
 
@@ -25,21 +27,35 @@ class ParqueaderoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ParqueaderoRequest $request)
     {
         $nombre = $request->get('nombre');
         $direccion = $request->get('direccion');
+        $nBahias = $request->get('numero_bahias');
         $localizacion = GoogleMaps::calcularLatitudLongitud($direccion);
 
         $data = [
             'Nombre' => $nombre,
             'Ubicacion' => $direccion,
             'latitud' => $localizacion['latitud'],
-            'longitud' => $localizacion['longitud'],
+            'longitud' => $localizacion['longitud']
         ];
 
         $parqueadero = Parqueadero::create($data);
-        return response()->json($data);
+
+        if($nBahias) {
+            for($i = 0; $i < $nBahias; $i++) {
+                Bahia::create([ 
+                    'IdParqueadero' => $parqueadero->id,
+                    'Disponible' => true
+                ]);
+            }
+        }
+
+        return response()->json([
+            'success' => true, 
+            'message' => "Parqueadero registrado exitosamente."
+        ]);
     }
 
     /**
@@ -50,11 +66,7 @@ class ParqueaderoController extends Controller
      */
     public function show($id)
     {
-        $parqueadero = Parqueadero::find($id);
-        if(!$parqueadero) {
-            return response()->json([ 'errors' => [ 'id' => ['id parking doesn\'t exists'] ]]);
-        }
-        
+        $parqueadero = Parqueadero::with('bahias')->find($id);
         return response()->json($parqueadero);
     }
 
@@ -65,7 +77,7 @@ class ParqueaderoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ParqueaderoRequest $request, $id)
     {
         $nombre = $request->get('nombre');
         $direccion = $request->get('direccion');
@@ -78,13 +90,11 @@ class ParqueaderoController extends Controller
             'longitud' => $localizacion['longitud'],
         ];
 
-        $parqueadero = Parqueadero::find($id);
-        if(!$parqueadero) {
-            return response()->json([ 'errors' => [ 'id' => ['id parking doesn\'t exists'] ]]);
-        }
-
-        $parqueadero->update($data);
-        return response()->json($data);
+        Parqueadero::find($id)->update($data);
+        return response()->json([
+            'success' => true, 
+            'message' => "Parqueadero actualizado exitosamente."
+        ]);
     }
 
     /**
@@ -95,12 +105,10 @@ class ParqueaderoController extends Controller
      */
     public function destroy($id)
     {
-        $parqueadero = Parqueadero::find($id);
-        if(!$parqueadero) {
-            return response()->json([ 'errors' => [ 'id' => ['id parking doesn\'t exists'] ]]);
-        }
-
-        $parqueadero->delete();
-        return response()->json([ 'deleted' => true ]);
+        Parqueadero::find($id)->delete();
+        return response()->json([ 
+            'success' => true, 
+            'message' => "Parqueadero eliminado exitosamente." 
+        ]);
     }
 }

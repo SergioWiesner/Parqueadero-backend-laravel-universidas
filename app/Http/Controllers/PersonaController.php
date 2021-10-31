@@ -14,8 +14,8 @@ class PersonaController extends Controller
      */
     public function index()
     {
-        $parqueaderos = Parqueadero::get();
-        return response()->json($parqueaderos);
+        $personas = Persona::get();
+        return response()->json($personas);
     }
 
     /**

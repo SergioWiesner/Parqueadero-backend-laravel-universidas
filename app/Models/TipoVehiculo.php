@@ -19,6 +19,6 @@ class TipoVehiculo extends Model
 
     public function tarifa()
     {
-        $this->hasMany(Tarifa::class, 'IdTipo', 'id');
+        $this->hasOne(Tarifa::class, 'IdTipo', 'id');
     }
 }

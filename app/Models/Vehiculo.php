@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Model\Persona;
+use App\Model\Pago;
 
 class Vehiculo extends Model
 {
@@ -15,5 +17,15 @@ class Vehiculo extends Model
     public function persona()
     {
         $this->belongsTo(Persona::class, 'IdPersona', 'id');
+    }
+
+    public function vehiculo()
+    {
+        $this->belongsTo(TipoVehiculo::class, 'IdTipo', 'id');
+    }
+
+    public function pagos()
+    {
+        $this->hasMany(Pago::class, 'IdVehiculo', 'id');
     }
 }

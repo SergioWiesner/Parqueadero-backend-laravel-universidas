@@ -3,10 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Contracts\Validation\Validator;
 
-class ParqueaderoRequest extends FormRequest
+class BahiaRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,9 +24,7 @@ class ParqueaderoRequest extends FormRequest
     public function rules()
     {
         return [
-            'nombre' => 'required|string|max:255',
-            'direccion' => 'required|string',
-            'numero_bahias' => 'integer|max:100'
+            'disponible' => 'required|boolean'
         ];
     }
 }
