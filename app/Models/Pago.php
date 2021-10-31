@@ -20,11 +20,11 @@ class Pago extends Model
 
     public function bahia()
     {
-        $this->belongsTo(Bahia::class, 'IdBahia', 'id');
+        return $this->belongsTo(Bahia::class, 'IdBahia', 'id');
     }
 
     public function pagos()
     {
-        $this->belongsTo(Pago::class, 'IdVehiculo', 'id');
+        return $this->belongsTo(Pago::class, 'IdVehiculo', 'id');
     }
 }

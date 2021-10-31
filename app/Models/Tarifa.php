@@ -14,6 +14,6 @@ class Tarifa extends Model
 
     public function tipoVehiculo()
     {
-        $this->belongsTo(TipoVehiculo::class, 'IdTipo', 'id');
+        return $this->belongsTo(TipoVehiculo::class, 'IdTipo', 'id');
     }
 }

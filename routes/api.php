@@ -26,10 +26,14 @@ Route::resource("vehiculos", \App\Http\Controllers\VehiculoController::class);
 Route::resource("tipo-vehiculos", \App\Http\Controllers\TipoVehiculoController::class);
 /* tarifa */
 Route::resource("tarifa", \App\Http\Controllers\TarifaController::class);
+/* parqueaderos */
+Route::resource('parqueaderos', \App\Http\Controllers\ParqueaderoController::class);
+/* bahias */
+Route::resource('bahias', \App\Http\Controllers\BahiaController::class);
+Route::get('parqueaderos/{parqueadero}/bahias', [\App\Http\Controllers\BahiaController::class, 'index']);
+Route::post('parqueaderos/{parqueadero}/bahias', [\App\Http\Controllers\BahiaController::class, 'store']);
 
-Route::middleware('parking.exists')->group(function(){
-    /* parqueaderos */
-    Route::resource('parqueaderos', \App\Http\Controllers\ParqueaderoController::class);
-    /* bahias */
-    Route::resource('parqueaderos.bahias', \App\Http\Controllers\BahiaController::class);
-});
+/* pagos */
+Route::resource('pagos', \App\Http\Controllers\PagoController::class);
+Route::get('parqueaderos/{parqueadero}/pagos', [\App\Http\Controllers\PagoController::class, 'index']);
+Route::post('parqueaderos/{parqueadero}/pagos', [\App\Http\Controllers\PagoController::class, 'store']);
