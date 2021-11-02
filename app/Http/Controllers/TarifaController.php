@@ -14,7 +14,7 @@ class TarifaController extends Controller
      */
     public function index()
     {
-        return response()->json(array('success' => true, 'body' => Tarifa::all()));
+        return response()->json(array('success' => true, 'message' => Tarifa::paginate(10)));
     }
 
     /**
@@ -31,22 +31,27 @@ class TarifaController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        //
+        Tarifa::create([
+            'Costo' => $request->Costo,
+            'IdTipo' => $request->IdTipo
+        ]);
+
+        return response()->json(array('success' => true, 'message' => "Tarifa ha sido creada exitosamente."));
     }
 
     /**
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
-        //
+        return response()->json(array('success' => true, 'message' => Tarifa::where('id', $id)->first()));
     }
 
     /**
@@ -69,17 +74,21 @@ class TarifaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        Tarifa::where('id', $id)->update([
+            'Costo' => $request->Costo,
+            'IdTipo' => $request->IdTipo
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
-        //
+        Tarifa::where('id', $id)->delete();
+        return response()->json(array('success' => true, 'message' => "Tarifa ha sido eliminada exitosamente."));
     }
 }

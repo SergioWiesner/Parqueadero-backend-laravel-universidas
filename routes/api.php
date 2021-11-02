@@ -20,14 +20,21 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 /* personas */
 Route::resource("personas", \App\Http\Controllers\PersonaController::class);
+Route::get("personas/vehiculos/{documento}", [\App\Http\Controllers\PersonaController::class, 'listVehiculosPersona'])->name("personas.vehiculos.listar");
+
 /* vehiculos */
 Route::resource("vehiculos", \App\Http\Controllers\VehiculoController::class);
+
 /* tipo-vehiculos */
 Route::resource("tipo-vehiculos", \App\Http\Controllers\TipoVehiculoController::class);
+Route::get("tipo-vehiculos/tarifa/{tipo}", [\App\Http\Controllers\TipoVehiculoController::class, 'tarifaTipoVehiculo'])->name("tipo-vehiculos.tarifa.listar");
+
 /* tarifa */
 Route::resource("tarifa", \App\Http\Controllers\TarifaController::class);
+
 /* parqueaderos */
 Route::resource('parqueaderos', \App\Http\Controllers\ParqueaderoController::class);
+
 /* bahias */
 Route::resource('bahias', \App\Http\Controllers\BahiaController::class);
 Route::get('parqueaderos/{parqueadero}/bahias', [\App\Http\Controllers\BahiaController::class, 'index']);

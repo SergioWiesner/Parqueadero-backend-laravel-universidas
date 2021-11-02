@@ -10,12 +10,11 @@ class PersonaController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        $personas = Persona::get();
-        return response()->json($personas);
+        return response()->json(array('success' => true, 'message' => Persona::paginate(10)));
     }
 
     /**
@@ -38,16 +37,9 @@ class PersonaController extends Controller
     {
         try {
             $registro = Persona::where("documento", $request->documento)->first();
+
             if (!is_null($registro) && count($registro) > 0) {
-                Persona::where("documento", $request->documento)->update([
-                    'tipo_documento' => $request->tipo_documento,
-                    'nombres' => $request->nombres,
-                    'apellidos' => $request->apellidos,
-                    'direccion' => $request->direccion,
-                    'telefono' => $request->telefono,
-                    'firma' => $request->firma
-                ]);
-                return response()->json(array('success' => true, 'message' => "Usuario " . $request->nombres . " ah sido actualizado."));
+                return response()->json(array('success' => true, 'message' => "Persona  " . $request->nombres . "  ya esta registrada en el sistema."));
             }
 
             Persona::create([
@@ -69,11 +61,12 @@ class PersonaController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
-
+        $data = Persona::where("documento", $id)->first();
+        return response()->json(array('success' => false, 'message' => $data));
     }
 
     /**
@@ -92,11 +85,22 @@ class PersonaController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
-
+        $result = Persona::where("documento", $id)->update([
+            'tipo_documento' => $request->tipo_documento,
+            'nombres' => $request->nombres,
+            'apellidos' => $request->apellidos,
+            'direccion' => $request->direccion,
+            'telefono' => $request->telefono,
+            'firma' => $request->firma
+        ]);
+        if (!is_null($result) && count($result) > 0) {
+            return response()->json(array('success' => true, 'message' => "Usuario " . $request->nombres . " ah sido actualizado exitosamente."));
+        }
+        return response()->json(array('success' => false, 'message' => "Usuario " . $request->nombres . " no ha sido actualizado."));
     }
 
     /**
@@ -108,5 +112,11 @@ class PersonaController extends Controller
     public function destroy($id)
     {
 
+    }
+
+    public function listVehiculosPersona($id)
+    {
+        $persona = Persona::where("documento", $id)->with('vehiculos')->first();
+        return response()->json(array('success' => true, 'message' => $persona->vehiculos));
     }
 }

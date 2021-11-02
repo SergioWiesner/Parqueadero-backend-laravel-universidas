@@ -14,7 +14,7 @@ class TipoVehiculoController extends Controller
      */
     public function index()
     {
-        return response()->json(array('success' => true, 'body' => TipoVehiculo::all()));
+        return response()->json(array('success' => true, 'message' => TipoVehiculo::all()));
     }
 
     /**
@@ -42,11 +42,11 @@ class TipoVehiculoController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
+        return response()->json(array('success' => true, 'message' => TipoVehiculo::where('id', $id)->first()));
     }
 
     /**
@@ -76,10 +76,18 @@ class TipoVehiculoController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
-        //
+        $tipoVehiculo = TipoVehiculo::where('id', $id)->delete();
+        return response()->json(array('success' => true, 'message' => "Tipo de vehiculo ha sido eliminado exitosamente."));
+    }
+
+
+    public function tarifaTipoVehiculo($id)
+    {
+        $tipoVehiculo = TipoVehiculo::where('id', $id)->with('tarifa')->first();
+        return response()->json(array('success' => true, 'message' => $tipoVehiculo->tarifa));
     }
 }

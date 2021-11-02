@@ -12,11 +12,11 @@ class VehiculoController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        //
+        return response()->json(array('success' => true, 'message' => Vehiculo::paginate(10)));
     }
 
     /**
@@ -38,6 +38,7 @@ class VehiculoController extends Controller
     public function store(VehiculoRequest $request)
     {
         Vehiculo::create([
+            'Placa' => $request->Placa,
             'Marca' => $request->Marca,
             'IdPersona' => $request->IdPersona,
             'IdTipo' => $request->IdTipo
@@ -50,11 +51,11 @@ class VehiculoController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
-        //
+        return response()->json(array('success' => true, 'message' => Vehiculo::where('Placa', $id)->get()));
     }
 
     /**
@@ -65,7 +66,7 @@ class VehiculoController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -73,21 +74,27 @@ class VehiculoController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
-        //
+        return Vehiculo::where('Placa', $id)->update([
+            'Marca' => $request->Marca,
+            'IdPersona' => $request->IdPersona,
+            'IdTipo' => $request->IdTipo
+        ]);
+        return response()->json(array('success' => true, 'message' => "Vehiculo " . $id . " ah sido actualizado exitosamente."));
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
-        //
+        Vehiculo::where('Placa', $id)->delete();
+        return response()->json(array('success' => true, 'message' => "Vehiculo " . $id . " ah sido eliminado."));
     }
 }

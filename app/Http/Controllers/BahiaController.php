@@ -14,31 +14,31 @@ class BahiaController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
     public function index($idParqueadero = null)
     {
-        if(!$idParqueadero) abort(404);
+        if (!$idParqueadero) abort(404);
         $parqueadero = Parqueadero::find($idParqueadero);
-        if(!$parqueadero) {
-            return response()->json([ 'errors' => [ 'id' => ['id parking doesn\'t exists'] ]]);
+        if (!$parqueadero) {
+            return response()->json(['errors' => ['id' => ['id parking doesn\'t exists']]]);
         }
 
         $bahias = Parqueadero::find($idParqueadero)->bahias()->paginate(10);
         return response()->json($bahias);
     }
 
-      /**
+    /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
         $bahia = Bahia::find($id);
-        if(!$bahia) {
-            return response()->json([ 'errors' => [ 'id' => ['id bahia doesn\'t exists in this parking'] ]]);
+        if (!$bahia) {
+            return response()->json(['errors' => ['id' => ['id bahia doesn\'t exists in this parking']]]);
         }
         return response()->json($bahia);
     }
@@ -47,15 +47,15 @@ class BahiaController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(BahiaRequest $request, $idParqueadero = null)
     {
-        if(!$idParqueadero) abort(404);
+        if (!$idParqueadero) abort(404);
         $parqueadero = Parqueadero::find($idParqueadero);
-        if(!$parqueadero) {
-            return response()->json([ 'errors' => [ 'id' => ['id parking doesn\'t exists'] ]]);
+        if (!$parqueadero) {
+            return response()->json(['errors' => ['id' => ['id parking doesn\'t exists']]]);
         }
 
         $disponible = $request->get('disponible');
@@ -72,43 +72,43 @@ class BahiaController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(BahiaRequest $request, $id)
     {
         try {
-            
+
             $disponible = $request->get('disponible');
             $bahia = Bahia::find($id);
             $bahia->update(['Disponible' => $disponible]);
 
             return response()->json([
-                'success' => true, 
+                'success' => true,
                 'message' => "Bahia actualizada exitosamente."
             ]);
 
-        } catch(Exception $e) {
-            return response()->json([ 'errors' => [ 'id' => ['id bahia doesn\'t exists'] ]]);
+        } catch (Exception $e) {
+            return response()->json(['errors' => ['id' => ['id bahia doesn\'t exists']]]);
         }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
         $bahia = Bahia::find($id);
-        if(!$bahia) {
-            return response()->json([ 'errors' => [ 'id' => ['id bahia doesn\'t exists'] ]]);
+        if (!$bahia) {
+            return response()->json(['errors' => ['id' => ['id bahia doesn\'t exists']]]);
         }
         $bahia->delete();
         return response()->json([
-            'success' => true, 
+            'success' => true,
             'message' => "Bahia eliminada exitosamente."
         ]);
     }
